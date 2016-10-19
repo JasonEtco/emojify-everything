@@ -4,6 +4,7 @@
   "minimum_chrome_version": "49",
 
   "name": "Emojify Everything",
+  "short_name": "Emojification",
   "description": "There aren't enough emojis in your websites. This extension fixes that.",
 
   "author": "Jason Etcovitch",
