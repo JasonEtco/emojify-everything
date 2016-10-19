@@ -26,10 +26,12 @@ function walk(node) {
 	}
 }
 
-// Quick ES6 Destructuring to capitalize the first letter of a string
-const capitalize = ([first,...rest]) => first.toUpperCase() + rest.join('');
 
 function handleText(textNode)  {
+	// Quick ES6 Destructuring to capitalize the first letter of a string
+	const capitalize = ([first,...rest]) => first.toUpperCase() + rest.join('');
+
+	// Capture current textNode value
 	let v = textNode.nodeValue;
 
 	// Use a reduced library for testing
