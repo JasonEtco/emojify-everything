@@ -1,4 +1,4 @@
-# <img src="extension/.icons/icon48.png" width="45" align="left" /> Emojify Everything.
+# <img src="extension/icons/icon48.png" width="45" align="left" /> Emojify Everything.
 ## More than you want.
 
 ![](emojify-everything.png)
