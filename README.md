@@ -3,6 +3,10 @@
 
 ![](emojify-everything.png)
 
+## Install
+
+Install it from the [Chrome Web Store](https://chrome.google.com/webstore/detail/emojify-everything/hkahpmfkdfeceiiklfbkalcpbceccjco) or [manually](http://superuser.com/a/247654/6877).
+
 ## License
 
 MIT © [Jason Etcovitch](http://jasonet.co)
