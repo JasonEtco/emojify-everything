@@ -20,9 +20,18 @@
   	"default_icon": "icons/icon128.png"
 	},
 
+  "permissions": [
+    "storage"
+  ],
+
   "content_scripts": [{
-    "js": ["emojis.js", "main.js"],
+    "js": ["simpleEmojis.js", "emojis.js", "main.js"],
     "matches": ["*://*/*"],
     "run_at": "document_end"
-  }]
+  }],
+
+  "options_ui": {
+    "page": "options.html",
+    "chrome_style": true
+  }
 }
