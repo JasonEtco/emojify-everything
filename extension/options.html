@@ -3,7 +3,9 @@
 <head>
   <title>🍆 Emojify-Everything Options</title>
   <style>
-    label { display: block; margin-bottom: 1em; }
+    label { display: block; margin-bottom: 0.2em; }
+    p { font-style: italic; margin-top: 0; }
+    span { font-style: normal; }
   </style>
 </head>
 
@@ -12,6 +14,7 @@
     <input type="checkbox" id="simple">
     Simple Emojis
   </label>
+  <p>This eliminates many emojis for performance reasons (like <span>🅰</span>)</p>
 
   <div id="status"></div>
   <button id="save">Save</button>
