@@ -17,7 +17,9 @@
   },
 
 	"browser_action": {
-  	"default_icon": "icons/icon128.png"
+  	"default_icon": "icons/icon128.png",
+    "default_title": "Emojify Everything",
+    "default_popup": "popup.html"
 	},
 
   "permissions": [
@@ -25,7 +27,7 @@
   ],
 
   "content_scripts": [{
-    "js": ["simpleEmojis.js", "emojis.js", "main.js"],
+    "js": ["js/simpleEmojis.js", "js/emojis.js", "main.js"],
     "matches": ["*://*/*"],
     "run_at": "document_end"
   }],
