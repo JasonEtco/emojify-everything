@@ -72,17 +72,17 @@ chrome.storage.sync.get([
 		// Loop through every item in the emoji library
 	  Object.keys(obj).map(itm => {
 			// Escape any glyphs by placing \ in front of them
-	    const str = itm.replace(/([+<>*()?])/g, "\\$1");
+	    const str = itm.replace(/([+<>*()?])/g, '\\$1');
 
 			// Regex to find the key
-	    const re = new RegExp("\\b" + str + "\\b",'g');
+	    const re = new RegExp('\\b' + str + '\\b','g');
 	    // Check if the string exists in the textNode
 	    if(v.search(re) >= 0){
 	      v = v.replace(re, obj[itm]);
 	    }
 
 			// Regex to find the title-case key
-			const reCap = new RegExp("\\b" + capitalize(str) + "\\b",'g');
+			const reCap = new RegExp('\\b' + capitalize(str) + '\\b','g');
 			// Check if the capitalized string exists in the textNode
 	    if(v.search(reCap) >= 0){
 	      v = v.replace(reCap, obj[itm]);
