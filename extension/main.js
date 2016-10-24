@@ -1,8 +1,12 @@
-chrome.storage.sync.get('simple', itm => {
-	const simple = itm.simple;
+// Get stored options
+chrome.storage.sync.get([
+	'simple',
+	'disabledSites'
+], options => {
+	const { simple, disabledSites } = options;
 
 	// Debug mode if on localhost
-	const debug = location.href === 'localhost:8000';
+	const debug = window.location.href.indexOf('localhost') > -1;
 	if (debug) console.log('Debugging the Emojify-Everything extension!');
 
 	// Define emoji library
@@ -18,7 +22,23 @@ chrome.storage.sync.get('simple', itm => {
 		obj = emojis;
 	}
 
-	walk(document.body);
+	// Set flag to run extension
+	let runExt = false;
+
+	// For each site listed in the disabledSites array
+	for (let i = 0; i < disabledSites.length; i++) {
+		// Check if the current URL contains the string
+		if(window.location.href.indexOf(disabledSites[i]) > -1) {
+			// Set the flag to true
+			runExt = true;
+			break;
+		}
+	}
+
+	// Run unless the flag is false
+	if (runExt) {
+		walk(document.body);
+	}
 
 	function walk(node) {
 		// This function comes from:
