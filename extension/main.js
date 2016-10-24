@@ -23,14 +23,14 @@ chrome.storage.sync.get([
 	}
 
 	// Set flag to run extension
-	let runExt = false;
+	let runExt = true;
 
 	// For each site listed in the disabledSites array
 	for (let i = 0; i < disabledSites.length; i++) {
 		// Check if the current URL contains the string
 		if(window.location.href.indexOf(disabledSites[i]) > -1) {
 			// Set the flag to true
-			runExt = true;
+			runExt = false;
 			break;
 		}
 	}
@@ -63,29 +63,19 @@ chrome.storage.sync.get([
 	}
 
 	function handleText(textNode)  {
-		// Quick ES6 Destructuring to capitalize the first letter of a string
-		const capitalize = ([first,...rest]) => first.toUpperCase() + rest.join('');
-
 		// Capture current textNode value
 		let v = textNode.nodeValue;
 
 		// Loop through every item in the emoji library
 	  Object.keys(obj).map(itm => {
 			// Escape any glyphs by placing \ in front of them
-	    const str = itm.replace(/([+<>*()?])/g, '\\$1');
+	    const str = itm.replace(/([+])/g, '\\$1');
 
 			// Regex to find the key
-	    const re = new RegExp('\\b' + str + '\\b','g');
+	    const re = new RegExp('\\b' + str + '\\b','ig');
 	    // Check if the string exists in the textNode
-	    if(v.search(re) >= 0){
+	    if(v.search(re) >= 0) {
 	      v = v.replace(re, obj[itm]);
-	    }
-
-			// Regex to find the title-case key
-			const reCap = new RegExp('\\b' + capitalize(str) + '\\b','g');
-			// Check if the capitalized string exists in the textNode
-	    if(v.search(reCap) >= 0){
-	      v = v.replace(reCap, obj[itm]);
 	    }
 	  });
 
