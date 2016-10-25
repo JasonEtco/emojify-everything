@@ -27,7 +27,7 @@ function deleteFromList(el) {
 
 // Saves options to chrome.storage.sync.
 function save_options() {
-  const simple = document.getElementById('simple').checked;
+  const expanded = document.getElementById('expanded').checked;
   const disabledSites = [];
   document.querySelectorAll('.disabledList__item').forEach(itm => {
     const str = itm.textContent.substring(0, itm.textContent.length - 1);
@@ -35,7 +35,7 @@ function save_options() {
   });
 
   chrome.storage.sync.set({
-    simple,
+    expanded,
     disabledSites
   }, () => {
     // Update status to let user know options were saved.
@@ -50,10 +50,10 @@ function save_options() {
 
 function restore_options() {
   chrome.storage.sync.get([
-    'simple',
+    'expanded',
     'disabledSites'
   ], itm => {
-    document.getElementById('simple').checked = itm.simple;
+    document.getElementById('expanded').checked = itm.expanded;
     itm.disabledSites.map(site => addToDisabledList(site));
   });
 }

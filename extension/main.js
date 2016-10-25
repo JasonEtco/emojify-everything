@@ -1,9 +1,9 @@
 // Get stored options
 chrome.storage.sync.get([
-	'simple',
+	'expanded',
 	'disabledSites'
 ], options => {
-	const { simple, disabledSites } = options;
+	const { expanded, disabledSites } = options;
 
 	// Debug mode if on localhost
 	const debug = window.location.href.indexOf('localhost') > -1;
@@ -14,12 +14,12 @@ chrome.storage.sync.get([
 	if (debug) {
 		// Use reduced library for debugging
 		obj = { "fire": "🔥", "train": "🚋", "+1": "💯", };
-	} else if (simple) {
-		// Use slightly reduced library if the options is checked
-		obj = simpleEmojis;
-	} else {
+	} else if (expanded) {
 		// Use the real deal giant library
 		obj = emojis;
+	} else {
+		// Use slightly reduced library if the options is checked
+		obj = simpleEmojis;
 	}
 
 	// Set flag to run extension
