@@ -18,6 +18,16 @@ function extractDomain(url) {
   return `${protocol}//${domain}`;
 }
 
+function saveAndClose() {
+  // Add the saved class to the popup
+  document.body.classList.add('saved');
+
+  // After some time, close the popup
+  setTimeout(() => {
+    window.close();
+  }, 1250);
+}
+
 document.querySelector('#disable').onclick = () => {
   chrome.tabs.query({
     active: true,
@@ -26,28 +36,21 @@ document.querySelector('#disable').onclick = () => {
     const url = extractDomain(tab[0].url);
 
     chrome.storage.sync.get(['disabledSites'], options => {
-      let arr;
-      if (options.disabledSites) {
-        if (options.disabledSites.indexOf(url) > -1) {
-          document.body.classList.add('saved');
-          setTimeout(() => {
-            window.close();
-          }, 1250);
-        } else {
-          arr = [...options.disabledSites, url];
-        }
-      } else {
-        arr = [url];
+      // Check if the site already exists in the disabled list
+      if (options.disabledSites && options.disabledSites.indexOf(url) > -1) {
+        saveAndClose();
+        return;
       }
+
+      // If there are any disabledSites, append the current site to the list
+      // Otherwise make a new array with just the current url
+      const arr = options.disabledSites ? [...options.disabledSites, url] : [url];
 
       chrome.storage.sync.set({
         disabledSites: arr
       }, () => {
-        document.body.classList.add('saved');
-        chrome.tabs.executeScript(tab[0].id, { code: 'window.location.reload();' });
-        setTimeout(() => {
-          window.close();
-        }, 1250);
+        chrome.tabs.reload(tab[0].id);
+        saveAndClose();
       });
     });
   });
