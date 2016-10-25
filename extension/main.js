@@ -25,13 +25,15 @@ chrome.storage.sync.get([
 	// Set flag to run extension
 	let runExt = true;
 
-	// For each site listed in the disabledSites array
-	for (let i = 0; i < disabledSites.length; i++) {
-		// Check if the current URL contains the string
-		if(window.location.href.indexOf(disabledSites[i]) > -1) {
-			// Set the flag to true
-			runExt = false;
-			break;
+	if (disabledSites) {
+		// For each site listed in the disabledSites array
+		for (let i = 0; i < disabledSites.length; i++) {
+			// Check if the current URL contains the string
+			if(window.location.href.indexOf(disabledSites[i]) > -1) {
+				// Set the flag to true
+				runExt = false;
+				break;
+			}
 		}
 	}
 
