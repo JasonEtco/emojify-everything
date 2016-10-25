@@ -3,21 +3,19 @@ document.querySelector('#go-to-options').onclick = () => {
 };
 
 function extractDomain(url) {
-    let domain;
-    let protocol;
-    // Find & remove protocol (http, ftp, etc.) and get domain
-    if (url.indexOf("://") > -1) {
-      domain = url.split('/')[2];
-      protocol = url.split('/')[0];
+  let domain;
+  let protocol;
+  // Find & remove protocol (http, ftp, etc.) and get domain
+  if (url.indexOf("://") > -1) {
+    domain = url.split('/')[2];
+    protocol = url.split('/')[0];
+  } else {
+    domain = url.split('/')[0];
+  }
+  // Find & remove port number
+  domain = domain.split(':')[0];
 
-      console.log(domain, protocol);
-    } else {
-      domain = url.split('/')[0];
-      console.log(domain, "NOPE!");
-    }
-    // Find & remove port number
-    domain = domain.split(':')[0];
-    return protocol + domain;
+  return `${protocol}//${domain}`;
 }
 
 document.querySelector('#disable').onclick = () => {
@@ -25,36 +23,31 @@ document.querySelector('#disable').onclick = () => {
     active: true,
     currentWindow: true
   }, tab => {
-    console.log(tab[0].url);
-  });
-  const url = `${location.protocol}//${location.host}`;
-  let arr;
+    const url = extractDomain(tab[0].url);
 
-  chrome.storage.sync.get(['disabledSites'], options => {
-    if (options.disabledSites) {
-      arr = [...options.disabledSites, url];
-    } else {
-      arr = [url];
-    }
+    chrome.storage.sync.get(['disabledSites'], options => {
+      let arr;
+      if (options.disabledSites) {
+        if (options.disabledSites.indexOf(url) > -1) {
+          document.body.classList.add('saved');
+          setTimeout(() => {
+            window.close();
+          }, 1250);
+        } else {
+          arr = [...options.disabledSites, url];
+        }
+      } else {
+        arr = [url];
+      }
 
-    chrome.storage.sync.set({
-      disabledSites: arr
-    }, () => {
-      console.log('Saved!');
+      chrome.storage.sync.set({
+        disabledSites: arr
+      }, () => {
+        document.body.classList.add('saved');
+        setTimeout(() => {
+          window.close();
+        }, 1250);
+      });
     });
   });
-
 }
-
-  // chrome.storage.sync.set({
-  //   disabledSites
-  // }, () => {
-  //   // Update status to let user know options were saved.
-  //   const status = document.getElementById('status');
-  //   status.textContent = 'Options saved.';
-  //
-  //   setTimeout(() => {
-  //     status.textContent = '';
-  //   }, 1250);
-  // });
-  // }
