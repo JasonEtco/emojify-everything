@@ -28,14 +28,43 @@ function saveAndClose() {
   }, 1250);
 }
 
-document.querySelector('#disable').onclick = () => {
+function saveToOptions(tabId, arr) {
+  chrome.storage.sync.set({
+    disabledSites: arr
+  }, () => {
+    chrome.tabs.reload(tabId);
+    saveAndClose();
+  });
+}
+
+chrome.storage.sync.get(['disabledSites'], options => {
   chrome.tabs.query({
     active: true,
     currentWindow: true
   }, tab => {
     const url = extractDomain(tab[0].url);
+    const enable = document.querySelector('#enable');
+    const disable = document.querySelector('#disable');
 
-    chrome.storage.sync.get(['disabledSites'], options => {
+    // Check if the current URL is on the blacklist
+    if(options.disabledSites.indexOf(url) > -1) {
+      // Hide the disable button, show the enable button
+      enable.style.display = 'block';
+      disable.style.display = 'none';
+    }
+
+    enable.onclick = () => {
+      const arr = options.disabledSites;
+      const index = arr.indexOf(url);
+      // Split the array around the index of the current site's url
+      const newArr = [
+        ...arr.slice(0, index),
+        ...arr.slice(index + 1),
+      ];
+      saveToOptions(tab[0].id, newArr);
+    }
+
+    disable.onclick = () => {
       // Check if the site already exists in the disabled list
       if (options.disabledSites && options.disabledSites.indexOf(url) > -1) {
         saveAndClose();
@@ -45,13 +74,7 @@ document.querySelector('#disable').onclick = () => {
       // If there are any disabledSites, append the current site to the list
       // Otherwise make a new array with just the current url
       const arr = options.disabledSites ? [...options.disabledSites, url] : [url];
-
-      chrome.storage.sync.set({
-        disabledSites: arr
-      }, () => {
-        chrome.tabs.reload(tab[0].id);
-        saveAndClose();
-      });
-    });
+      saveToOptions(tab[0].id, arr);
+    }
   });
-}
+});
