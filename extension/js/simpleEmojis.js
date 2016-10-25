@@ -213,7 +213,7 @@ const simpleEmojis = {
   "shell": "🐚",
   "spider web": "🕸",
   "moon": "🌔",
-  "sun with face": "🌞",
+  "sun": "🌞",
   "star": "⭐",
   "sparkles": "✨",
   "comet": "☄",
