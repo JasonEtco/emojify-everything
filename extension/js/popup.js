@@ -44,6 +44,7 @@ document.querySelector('#disable').onclick = () => {
         disabledSites: arr
       }, () => {
         document.body.classList.add('saved');
+        chrome.tabs.executeScript(tab[0].id, { code: 'window.location.reload();' });
         setTimeout(() => {
           window.close();
         }, 1250);
