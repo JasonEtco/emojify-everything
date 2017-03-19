@@ -5,22 +5,9 @@ chrome.storage.sync.get([
 ], options => {
 	const { expanded, disabledSites } = options;
 
-	// Debug mode if on localhost
-	const debug = window.location.href.indexOf('localhost') > -1;
-	if (debug) console.log('Debugging the Emojify-Everything extension!');
-
 	// Define emoji library
-	let obj;
-	if (debug) {
-		// Use reduced library for debugging
-		obj = { "fire": "🔥", "train": "🚋", "+1": "💯", };
-	} else if (expanded) {
-		// Use the real deal giant library
-		obj = emojis;
-	} else {
-		// Use slightly reduced library if the options is checked
-		obj = simpleEmojis;
-	}
+	const obj = expanded ? emojis : simpleEmojis;
+	const keys = Object.keys(obj);
 
 	// Set flag to run extension
 	let runExt = true;
@@ -69,7 +56,9 @@ chrome.storage.sync.get([
 		let v = textNode.nodeValue;
 
 		// Loop through every item in the emoji library
-	  Object.keys(obj).map(itm => {
+		for (let i = 0; i < keys.length; i++) {
+			const itm = keys[i];
+			
 			// Escape any glyphs by placing \ in front of them
 	    const str = itm.replace(/([+])/g, '\\$1');
 
@@ -79,7 +68,7 @@ chrome.storage.sync.get([
 	    if(v.search(re) >= 0) {
 	      v = v.replace(re, obj[itm]);
 	    }
-	  });
+		}
 
 		// Replace the textNode's value with the new one
 		textNode.nodeValue = v;
