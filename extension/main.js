@@ -6,8 +6,8 @@ chrome.storage.sync.get([
 	const { expanded, disabledSites } = options;
 
 	// Define emoji library
-	const obj = expanded ? emojis : simpleEmojis;
-	const keys = Object.keys(obj);
+	const emojiObj = expanded ? emojis : simpleEmojis;
+	const keys = Object.keys(emojiObj);
 
 	// Set flag to run extension
 	let runExt = true;
@@ -57,20 +57,17 @@ chrome.storage.sync.get([
 
 		// Loop through every item in the emoji library
 		for (let i = 0; i < keys.length; i++) {
-			const itm = keys[i];
+			const key = keys[i];
 			
 			// Escape any glyphs by placing \ in front of them
-	    const str = itm.replace(/([+])/g, '\\$1');
+	    const str = key.replace(/([+])/g, '\\$1');
 
 			// Regex to find the key
 	    const re = new RegExp('\\b' + str + '\\b','ig');
 	    // Check if the string exists in the textNode
 	    if(v.search(re) >= 0) {
-	      v = v.replace(re, obj[itm]);
+				textNode.parentNode.innerHTML = textNode.nodeValue.replace(re, `<span title="${key}">${emojiObj[key]}</span>`);
 	    }
-		}
-
-		// Replace the textNode's value with the new one
-		textNode.nodeValue = v;
+		};
 	}
 });
